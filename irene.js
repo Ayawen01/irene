@@ -1,4 +1,4 @@
-"use script";
+'use strict';
 
 function IreneVisit(x) {
     this.value = x;
@@ -18,5 +18,7 @@ IreneVisit.prototype.visitString = function() {
 function Irene(x) {
     this.x = x;
 }
+
+Irene.prototype.box
 
 window.$irene = (x) => new IreneVisit(x).execute();
