@@ -12,12 +12,11 @@ IreneVisit.prototype.execute = function() {
 };
 
 IreneVisit.prototype.visitString = function() {
-    
+    return new Irene(this.value);
 };
 
 function Irene(x) {
-    const visit = new IreneVisit(x);
-    return visit.execute();
+    this.x = x;
 }
 
-window.$irene = (x) => new Irene(x);
+window.$irene = (x) => new IreneVisit(x).execute();
