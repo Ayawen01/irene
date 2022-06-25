@@ -48,6 +48,22 @@ Irene.prototype = {
             elems.push(f.call(item, item, index));
         }
         return new Irene(elems);;
+    },
+    sort: function(f) {
+        this.elems.sort(f);
+        return this;
+    },
+    appendChild: function(elem) {
+        if (Irene.tool.assertType(elem, 'Object')) {
+            this.forEach(item => {
+                item.insertAdjacentElement('afterend', elem);
+            });
+        }
+        if (Irene.tool.assertType(elem, 'Array')) {
+            this.forEach(item => {
+                elem.forEach(elem => item.insertAdjacentElement('afterend', elem));
+            });
+        }
     }
 };
 
@@ -64,6 +80,12 @@ Irene.core = {
 };
 
 Irene.tool = {
+    typeof: function(value) {
+        return Object.prototype.toString.call(value).slice(8, -1);
+    },
+    assertType: function(value, type) {
+        return Irene.tool.typeof(value) === type;
+    },
     isId: function(str) {
         const regex = /^[#]\D+/;
         return regex.test(str);
