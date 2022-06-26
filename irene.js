@@ -47,23 +47,147 @@ Irene.prototype = {
         for (const [index, item] of this.elems.entries()) {
             elems.push(f.call(item, item, index));
         }
-        return new Irene(elems);;
+        return new Irene(elems);
+    },
+    filter: function(f) {
+        const elems = [];
+        for (const [index, item] of this.elems.entries()) {
+            if (f.call(item, item, index)) {
+                elems.push(item);
+            }
+        }
+        return new Irene(elems);
     },
     sort: function(f) {
         this.elems.sort(f);
         return this;
     },
+    parent: function() {
+        const parents = [];
+        this.forEach(item => {
+            const parent = item.parentNode;
+            const index = parents.findIndex(node => node === parent);
+            if (index === -1) {
+                parents.push(parent);
+            }
+        });
+        return new Irene(parents);
+    },
+    begin: function(elem) {
+        if (elem instanceof Irene) {
+            this.forEach(item => {
+                elem.forEach(node => item.insertAdjacentElement('beforebegin', Irene.core.cloneNode(node)));
+            });
+            return;
+        }
+
+        if (elem instanceof Array) {
+            this.forEach(item => {
+                elem.forEach(node => item.insertAdjacentElement('beforebegin', Irene.core.cloneNode(node)));
+            });
+            return;
+        }
+
+        if (elem instanceof HTMLElement) {
+            this.forEach(item => item.insertAdjacentElement('beforebegin', Irene.core.cloneNode(elem)));
+            return;
+        }
+
+        throw new Error('elem不是一个HTMLElement对象');
+    },
+    append: function(elem) {
+        if (elem instanceof Irene) {
+            this.forEach(item => {
+                elem.forEach(node => item.insertAdjacentElement('afterend', Irene.core.cloneNode(node)));
+            });
+            return;
+        }
+
+        if (elem instanceof Array) {
+            this.forEach(item => {
+                elem.forEach(node => item.insertAdjacentElement('afterend', Irene.core.cloneNode(node)));
+            });
+            return;
+        }
+
+        if (elem instanceof HTMLElement) {
+            this.forEach(item => item.insertAdjacentElement('afterend', Irene.core.cloneNode(elem)));
+            return;
+        }
+
+        throw new Error('elem不是一个HTMLElement对象');
+    },
+    remove: function() {
+        this.forEach(item => {
+            if (item instanceof HTMLElement) {
+                item.remove();
+            } else {
+                throw new Error('elem不是一个HTMLElement对象');
+            }
+        });
+        return this;
+    },
+    render: function() {
+        
+    },
+    beginChild: function(elem) {
+        if (elem instanceof Irene) {
+            this.forEach(item => {
+                elem.forEach(node => item.insertAdjacentElement('afterbegin', Irene.core.cloneNode(node)));
+            });
+            return;
+        }
+
+        if (elem instanceof Array) {
+            this.forEach(item => {
+                elem.forEach(node => item.insertAdjacentElement('afterbegin', Irene.core.cloneNode(node)));
+            });
+            return;
+        }
+
+        if (elem instanceof HTMLElement) {
+            this.forEach(item => item.insertAdjacentElement('afterbegin', Irene.core.cloneNode(elem)));
+            return;
+        }
+
+        throw new Error('elem不是一个HTMLElement对象');
+    },
     appendChild: function(elem) {
-        if (Irene.tool.assertType(elem, 'Object')) {
+        if (elem instanceof Irene) {
             this.forEach(item => {
-                item.insertAdjacentElement('afterend', elem);
+                elem.forEach(node => item.insertAdjacentElement('beforeend', Irene.core.cloneNode(node)));
             });
+            return;
         }
-        if (Irene.tool.assertType(elem, 'Array')) {
+
+        if (elem instanceof Array) {
             this.forEach(item => {
-                elem.forEach(elem => item.insertAdjacentElement('afterend', elem));
+                elem.forEach(node => item.insertAdjacentElement('beforeend', Irene.core.cloneNode(node)));
             });
+            return;
         }
+
+        if (elem instanceof HTMLElement) {
+            this.forEach(item => item.insertAdjacentElement('beforeend', Irene.core.cloneNode(elem)));
+            return;
+        }
+
+        throw new Error('elem不是一个HTMLElement对象');
+    },
+    eq: function(index) {
+        if (index >= this.len()) {
+            throw new Error('下标访问越界');
+        }
+        return new Irene([this.elems[index]]);
+    },
+    clone: function(isDeep = true) {
+        return this.map(item => Irene.core.cloneNode(item));
+    },
+    getElems: function() {
+        return this.elems;
+    },
+    len: function() {
+        return this.length;
     }
 };
 
@@ -76,6 +200,12 @@ Irene.core = {
     },
     tag: function(tagName) {
         return Array.from(document.getElementsByTagName(tagName));
+    },
+    cloneNode: function(elem, isDeep = true) {
+        if (elem instanceof HTMLElement) {
+            return elem.cloneNode(isDeep);
+        }
+        throw new Error('elem不是一个HTMLElement对象');
     }
 };
 
