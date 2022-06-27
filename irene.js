@@ -58,7 +58,7 @@ Irene.prototype = {
         }
         return new Irene(elems);
     },
-    sort: function(f) {
+    sort: function(f=(a,b)=>a-b) {
         this.elems.sort(f);
         return this;
     },
@@ -189,6 +189,20 @@ Irene.prototype = {
             throw new Error('下标访问越界');
         }
         return new Irene([this.elems[index]]);
+    },
+    range: function(startIndex = 0, endIndex = 0) {
+        if (startIndex === 0 && endIndex === 0) {
+            return new Irene(this.elems.slice());
+        } else if (endIndex === 0) {
+            return new Irene(this.elems.slice(startIndex));
+        } else {
+            return new Irene(this.elems.slice(startIndex, endIndex));
+        }
+    },
+    text: function() {
+        let text = '';
+        this.forEach(item => text += item.innerText);
+        return text;
     },
     clear: function() {
         this.elems = [];
