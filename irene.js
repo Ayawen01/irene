@@ -6,6 +6,10 @@ function IreneVisit(x) {
 }
 
 IreneVisit.prototype.execute = function() {
+    if (this.value instanceof HTMLElement) {
+        return this.visitHtmlElement();
+    }
+    
     switch (this.type) {
         case 'String': return this.visitString();
         case 'Array': return this.visitArray();
@@ -28,6 +32,10 @@ IreneVisit.prototype.visitString = function() {
 
 IreneVisit.prototype.visitArray = function() {
     return new Irene(this.value);
+};
+
+IreneVisit.prototype.visitHtmlElement = function() {
+    return new Irene([this.value]);
 };
 
 function Irene(elems) {
