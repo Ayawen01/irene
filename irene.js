@@ -128,7 +128,17 @@ Irene.prototype = {
         return this;
     },
     render: function() {
-        
+        this.parent().appendChild(this);
+        this.remove();
+        return this;
+    },
+    children: function() {
+        const childrens = [];
+        this.forEach(item => {
+            const children = Array.from(item.children);
+            childrens.push(...children);
+        })
+        return new Irene(childrens);
     },
     beginChild: function(elem) {
         if (elem instanceof Irene) {
@@ -179,6 +189,10 @@ Irene.prototype = {
             throw new Error('下标访问越界');
         }
         return new Irene([this.elems[index]]);
+    },
+    clear: function() {
+        this.elems = [];
+        this.length = 0;
     },
     clone: function(isDeep = true) {
         return this.map(item => Irene.core.cloneNode(item));
