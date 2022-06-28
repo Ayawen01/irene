@@ -13,18 +13,24 @@
         <p>3</p>
         <p>1</p>
     </div>
-    <button onclick="sort()">sort</button>
+    <button onclick="ascending()">升序</button>
+    <button onclick="descending()">降序</button>
 </body>
 <script src="../irene.js"></script>
 <script>
-    const div = $irene('div');
-    const p = $irene('p');
-    
-    function sort() {
+    function ascending() {
         $irene('p').sort((a,b) => {
             const _a = Number($irene(a).text());
             const _b = Number($irene(b).text());
             return _a - _b;
+        }).render();
+    }
+
+    function descending() {
+        $irene('p').sort((a,b) => {
+            const _a = Number($irene(a).text());
+            const _b = Number($irene(b).text());
+            return _b - _a;
         }).render();
     }
 </script>
