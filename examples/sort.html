@@ -21,10 +21,10 @@
     const p = $irene("p");
     
     function sort() {
-        p.sort((a,b) => {
-        const _a = Number($irene(a).text());
-        const _b = Number($irene(b).text());
-        return _a - _b;
+        $irene("p").sort((a,b) => {
+            const _a = Number($irene(a).text());
+            const _b = Number($irene(b).text());
+            return _a - _b;
         }).render();
     }
 </script>
