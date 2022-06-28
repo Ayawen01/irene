@@ -17,11 +17,11 @@
 </body>
 <script src="../irene.js"></script>
 <script>
-    const div = $irene("div");
-    const p = $irene("p");
+    const div = $irene('div');
+    const p = $irene('p');
     
     function sort() {
-        $irene("p").sort((a,b) => {
+        $irene('p').sort((a,b) => {
             const _a = Number($irene(a).text());
             const _b = Number($irene(b).text());
             return _a - _b;
