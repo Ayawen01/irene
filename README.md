@@ -27,13 +27,11 @@ $irene(HTMLElement | String(idName | className | tagName) | Array);
 #### forEach、map、filter、sort
 ```javascript
 method: forEach(f) -> void
-
 $irene('p').forEach((item, index) => {
     ...
 });
 
 method: map(f) -> Irene
-
 const newP = $irene('p').map((item, index) => {
     ...
 });
@@ -45,7 +43,6 @@ const newP = $irene('p').filter((item, index) => {
 
 method: sort(f=(a,b)=>a-b) -> Irene
 $irene('p').sort();
-
 ```
 
 #### 获取父类Dom
