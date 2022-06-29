@@ -50,6 +50,11 @@ $irene('p').sort();
 method: parent() -> Irene
 ```
 
+#### 获取同级Dom
+```javascript
+method: siblings() -> Irene
+```
+
 #### 获取子类Dom
 ```javascript
 method: children() -> Irene
@@ -73,15 +78,18 @@ method: remove() -> Irene
 method: render() -> Irene
 ```
 
-#### eq、range
+#### eq、range、first、last
 ```javascript
 method: eq(index) -> Irene
 method: range(startIndex, endIndex) -> Irene
+method: first() -> Irene
+method: last() -> Irene
 ```
 
-#### text
+#### text、setText
 ```javascript
 method: text() -> String
+method: setText() -> Irene
 ```
 
 #### clone、clear、getElems、len

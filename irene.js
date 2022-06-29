@@ -81,6 +81,35 @@ Irene.prototype = {
         });
         return new Irene(parents);
     },
+    siblings: function() {
+        const item = this.first().getElems()[0];
+        const prevElems = [];
+        const nextElems = [];
+        let node = item;
+
+        while (node.previousElementSibling !== null) {
+            prevElems.push(node.previousElementSibling);
+            node = node.previousElementSibling;
+        }
+
+        node = item;
+        nextElems.push(node);
+
+        while (node.nextElementSibling !== null) {
+            nextElems.push(node.nextElementSibling);
+            node = node.nextElementSibling;
+        }
+
+        return new Irene([...prevElems.reverse(),...nextElems]);
+    },
+    children: function() {
+        const childrens = [];
+        this.forEach(item => {
+            const children = Array.from(item.children);
+            childrens.push(...children);
+        })
+        return new Irene(childrens);
+    },
     begin: function(elem) {
         if (elem instanceof Irene) {
             this.forEach(item => {
@@ -124,29 +153,6 @@ Irene.prototype = {
         }
 
         throw new Error('elem不是一个HTMLElement对象');
-    },
-    remove: function() {
-        this.forEach(item => {
-            if (item instanceof HTMLElement) {
-                item.remove();
-            } else {
-                throw new Error('elem不是一个HTMLElement对象');
-            }
-        });
-        return this;
-    },
-    render: function() {
-        this.parent().appendChild(this);
-        this.remove();
-        return this;
-    },
-    children: function() {
-        const childrens = [];
-        this.forEach(item => {
-            const children = Array.from(item.children);
-            childrens.push(...children);
-        })
-        return new Irene(childrens);
     },
     beginChild: function(elem) {
         if (elem instanceof Irene) {
@@ -192,6 +198,21 @@ Irene.prototype = {
 
         throw new Error('elem不是一个HTMLElement对象');
     },
+    remove: function() {
+        this.forEach(item => {
+            if (item instanceof HTMLElement) {
+                item.remove();
+            } else {
+                throw new Error('elem不是一个HTMLElement对象');
+            }
+        });
+        return this;
+    },
+    render: function() {
+        this.parent().appendChild(this);
+        this.remove();
+        return this;
+    },
     eq: function(index) {
         if (index >= this.len()) {
             throw new Error('下标访问越界');
@@ -207,10 +228,26 @@ Irene.prototype = {
             return new Irene(this.elems.slice(startIndex, endIndex));
         }
     },
+    first: function() {
+        if (this.len() < 1) {
+            throw new Error('当前元素为空');
+        }
+        return this.eq(0);
+    },
+    last: function() {
+        if (this.len() < 1) {
+            throw new Error('当前元素为空');
+        }
+        return this.eq(this.len() - 1);
+    },
     text: function() {
         let text = '';
         this.forEach(item => text += item.innerText);
         return text;
+    },
+    setText: function(text) {
+        this.forEach(item => item.innerText = text);
+        return this;
     },
     clear: function() {
         this.elems = [];

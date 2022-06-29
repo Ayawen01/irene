@@ -13,6 +13,8 @@
         <p>3</p>
         <p>1</p>
     </div>
+    <p>a</p>
+    <p>b</p>
     <button onclick="sort()">sort</button>
 </body>
 <script src="../irene.js"></script>
@@ -21,7 +23,7 @@
     const p = $irene("p");
     
     function sort() {
-        $irene("p").sort((a,b) => {
+        p.first().siblings().sort((a,b) => {
             const _a = Number($irene(a).text());
             const _b = Number($irene(b).text());
             return _a - _b;
