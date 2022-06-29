@@ -40,26 +40,27 @@ class IreneVisit {
     }
 }
 
-function Irene(elems) {
-    this.elems = elems;
-    this.length = elems.length;
-}
+class Irene {
+    constructor(elems) {
+        this.elems = elems;
+        this.length = elems.length;
+    }
 
-Irene.prototype = {
-    constructor: Irene,
-    forEach: function(f) {
+    forEach(f) {
         for (const [index, item] of this.elems.entries()) {
             f.call(item, item, index);
         }
-    },
-    map: function(f) {
+    }
+
+    map(f) {
         const elems = [];
         for (const [index, item] of this.elems.entries()) {
             elems.push(f.call(item, item, index));
         }
         return new Irene(elems);
-    },
-    filter: function(f) {
+    }
+
+    filter(f) {
         const elems = [];
         for (const [index, item] of this.elems.entries()) {
             if (f.call(item, item, index)) {
@@ -67,12 +68,14 @@ Irene.prototype = {
             }
         }
         return new Irene(elems);
-    },
-    sort: function(f=(a,b)=>a-b) {
+    }
+
+    sort(f=(a,b)=>a-b) {
         this.elems.sort(f);
         return this;
-    },
-    parent: function() {
+    }
+    
+    parent() {
         const parents = [];
         this.forEach(item => {
             const parent = item.parentNode;
@@ -82,8 +85,9 @@ Irene.prototype = {
             }
         });
         return new Irene(parents);
-    },
-    siblings: function() {
+    }
+
+    siblings() {
         const item = this.first().getElems()[0];
         const prevElems = [];
         const nextElems = [];
@@ -100,16 +104,18 @@ Irene.prototype = {
             node = node.nextElementSibling;
         }
         return new Irene([...prevElems.reverse(),...nextElems]);
-    },
-    children: function() {
+    }
+
+    children() {
         const childrens = [];
         this.forEach(item => {
             const children = Array.from(item.children);
             childrens.push(...children);
         })
         return new Irene(childrens);
-    },
-    begin: function(elem) {
+    }
+
+    begin(elem) {
         if (elem instanceof Irene) {
             this.forEach(item => {
                 elem.forEach(node => item.insertAdjacentElement('beforebegin', Irene.core.cloneNode(node)));
@@ -130,8 +136,9 @@ Irene.prototype = {
         }
 
         throw new Error('elem不是一个HTMLElement对象');
-    },
-    append: function(elem) {
+    }
+
+    append(elem) {
         if (elem instanceof Irene) {
             this.forEach(item => {
                 elem.forEach(node => item.insertAdjacentElement('afterend', Irene.core.cloneNode(node)));
@@ -152,8 +159,9 @@ Irene.prototype = {
         }
 
         throw new Error('elem不是一个HTMLElement对象');
-    },
-    beginChild: function(elem) {
+    }
+
+    beginChild(elem) {
         if (elem instanceof Irene) {
             this.forEach(item => {
                 elem.forEach(node => item.insertAdjacentElement('afterbegin', Irene.core.cloneNode(node)));
@@ -174,8 +182,9 @@ Irene.prototype = {
         }
 
         throw new Error('elem不是一个HTMLElement对象');
-    },
-    appendChild: function(elem) {
+    }
+
+    appendChild(elem) {
         if (elem instanceof Irene) {
             this.forEach(item => {
                 elem.forEach(node => item.insertAdjacentElement('beforeend', Irene.core.cloneNode(node)));
@@ -196,8 +205,9 @@ Irene.prototype = {
         }
 
         throw new Error('elem不是一个HTMLElement对象');
-    },
-    remove: function() {
+    }
+
+    remove() {
         this.forEach(item => {
             if (item instanceof HTMLElement) {
                 item.remove();
@@ -206,19 +216,22 @@ Irene.prototype = {
             }
         });
         return this;
-    },
-    render: function() {
+    }
+
+    render() {
         this.parent().appendChild(this);
         this.remove();
         return this;
-    },
-    eq: function(index) {
+    }
+
+    eq(index) {
         if (index >= this.len()) {
             throw new Error('下标访问越界');
         }
         return new Irene([this.elems[index]]);
-    },
-    range: function(startIndex = 0, endIndex = 0) {
+    }
+
+    range(startIndex = 0, endIndex = 0) {
         if (startIndex === 0 && endIndex === 0) {
             return new Irene(this.elems.slice());
         } else if (endIndex === 0) {
@@ -226,54 +239,62 @@ Irene.prototype = {
         } else {
             return new Irene(this.elems.slice(startIndex, endIndex));
         }
-    },
-    first: function() {
+    }
+
+    first() {
         if (this.len() < 1) {
             throw new Error('当前元素为空');
         }
         return this.eq(0);
-    },
-    last: function() {
+    }
+
+    last() {
         if (this.len() < 1) {
             throw new Error('当前元素为空');
         }
         return this.eq(this.len() - 1);
-    },
-    text: function() {
+    }
+
+    text() {
         let text = '';
         this.forEach(item => text += item.innerText);
         return text;
-    },
-    setText: function(text) {
+    }
+
+    setText(text) {
         this.forEach(item => item.innerText = text);
         return this;
-    },
-    clear: function() {
+    }
+
+    clear() {
         this.elems = [];
         this.length = 0;
-    },
-    clone: function(isDeep = true) {
+    }
+
+    clone(isDeep = true) {
         return this.map(item => Irene.core.cloneNode(item));
-    },
-    getElems: function() {
+    }
+
+    getElems() {
         return this.elems;
-    },
-    len: function() {
+    }
+
+    len() {
         return this.length;
     }
-};
+}
 
 Irene.core = {
-    id: function(idName) {
+    id(idName) {
         return [document.getElementById(idName)];
     },
-    class: function(className) {
+    class(className) {
         return Array.from(document.getElementsByClassName(className));
     },
-    tag: function(tagName) {
+    tag(tagName) {
         return Array.from(document.getElementsByTagName(tagName));
     },
-    cloneNode: function(elem, isDeep = true) {
+    cloneNode(elem, isDeep = true) {
         if (elem instanceof HTMLElement) {
             return elem.cloneNode(isDeep);
         }
@@ -282,21 +303,21 @@ Irene.core = {
 };
 
 Irene.tool = {
-    typeof: function(value) {
+    typeof(value) {
         return Object.prototype.toString.call(value).slice(8, -1);
     },
-    assertType: function(value, type) {
+    assertType(value, type) {
         return Irene.tool.typeof(value) === type;
     },
-    isId: function(str) {
+    isId(str) {
         const regex = /^[#]\D+/;
         return regex.test(str);
     },
-    isClass: function(str) {
+    isClass(str) {
         const regex = /^[.]\D+/;
         return regex.test(str);
     },
-    isTag: function(str) {
+    isTag(str) {
         const regex = /^\D+/;
         return regex.test(str);
     }
