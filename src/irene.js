@@ -85,21 +85,18 @@ Irene.prototype = {
         const item = this.first().getElems()[0];
         const prevElems = [];
         const nextElems = [];
+        
         let node = item;
-
         while (node.previousElementSibling !== null) {
             prevElems.push(node.previousElementSibling);
             node = node.previousElementSibling;
         }
-
         node = item;
         nextElems.push(node);
-
         while (node.nextElementSibling !== null) {
             nextElems.push(node.nextElementSibling);
             node = node.nextElementSibling;
         }
-
         return new Irene([...prevElems.reverse(),...nextElems]);
     },
     children: function() {
