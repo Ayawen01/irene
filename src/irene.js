@@ -1,42 +1,44 @@
 'use strict';
 
-function IreneVisit(x) {
-    this.value = x;
-    this.type = Object.prototype.toString.call(x).slice(8, -1);
-}
-
-IreneVisit.prototype.execute = function() {
-    if (this.value instanceof HTMLElement) {
-        return this.visitHtmlElement();
+class IreneVisit {
+    constructor(x) {
+        this.value = x;
+        this.type = Object.prototype.toString.call(x).slice(8, -1);
     }
+
+    execute() {
+        if (this.value instanceof HTMLElement) {
+            return this.visitHtmlElement();
+        }
+        
+        switch (this.type) {
+            case 'String': return this.visitString();
+            case 'Array': return this.visitArray();
+        }
+    }
+
+    visitString() {
+        if (Irene.tool.isId(this.value)) {
+            this.value = this.value.slice(1);
+            return new Irene(Irene.core.id(this.value));
+        } else if (Irene.tool.isClass(this.value)) {
+            this.value = this.value.slice(1);
+            return new Irene(Irene.core.class(this.value));
+        } else if (Irene.tool.isTag(this.value)) {
+            return new Irene(Irene.core.tag(this.value));
+        } else {
     
-    switch (this.type) {
-        case 'String': return this.visitString();
-        case 'Array': return this.visitArray();
+        }
     }
-};
 
-IreneVisit.prototype.visitString = function() {
-    if (Irene.tool.isId(this.value)) {
-        this.value = this.value.slice(1);
-        return new Irene(Irene.core.id(this.value));
-    } else if (Irene.tool.isClass(this.value)) {
-        this.value = this.value.slice(1);
-        return new Irene(Irene.core.class(this.value));
-    } else if (Irene.tool.isTag(this.value)) {
-        return new Irene(Irene.core.tag(this.value));
-    } else {
-
+    visitArray() {
+        return new Irene(this.value);
     }
-};
 
-IreneVisit.prototype.visitArray = function() {
-    return new Irene(this.value);
-};
-
-IreneVisit.prototype.visitHtmlElement = function() {
-    return new Irene([this.value]);
-};
+    visitHtmlElement() {
+        return new Irene([this.value]);
+    }
+}
 
 function Irene(elems) {
     this.elems = elems;
