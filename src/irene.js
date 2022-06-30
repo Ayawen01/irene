@@ -74,6 +74,20 @@ class Irene {
         this.elems.sort(f);
         return this;
     }
+
+    merge() {
+        const array = [];
+        this.forEach(item => {
+            if (Array.isArray(item)) {
+                array.push(...this.merge.call(new Irene(item)).getElems());
+            } else if (Irene.tool.isIrene(item)) {
+                array.push(...this.merge.call(item).getElems());
+            } else {
+                array.push(item);
+            }
+        });
+        return new Irene(array);
+    }
     
     parent() {
         const parents = [];
@@ -88,7 +102,7 @@ class Irene {
     }
 
     siblings() {
-        const item = this.first().getElems()[0];
+        const [item] = this.first().getElems();
         const prevElems = [];
         const nextElems = [];
         
@@ -320,6 +334,9 @@ Irene.tool = {
     isTag(str) {
         const regex = /^\D+/;
         return regex.test(str);
+    },
+    isIrene(elem) {
+        return elem instanceof Irene;
     }
 };
 

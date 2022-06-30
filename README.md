@@ -21,10 +21,10 @@
 
 #### 构造方法
 ```javascript
-$irene(HTMLElement | String(idName | className | tagName) | Array);
+$irene(HTMLElement | String(idName | className | tagName) | Array) -> Irene
 ```
 
-#### forEach、map、filter、sort
+#### forEach、map、filter、sort、merge
 ```javascript
 method: forEach(f) -> void
 $irene('p').forEach((item, index) => {
@@ -43,6 +43,9 @@ const newP = $irene('p').filter((item, index) => {
 
 method: sort(f=(a,b)=>a-b) -> Irene
 $irene('p').sort();
+
+method: merge() -> Irene
+$irene('p').merge();
 ```
 
 #### 获取父类Dom
