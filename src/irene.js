@@ -88,6 +88,11 @@ class Irene {
         });
         return new Irene(array);
     }
+
+    reverse() {
+        this.elems = this.elems.reverse();
+        return this;
+    }
     
     parent() {
         const parents = [];
