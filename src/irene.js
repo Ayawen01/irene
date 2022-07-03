@@ -40,10 +40,28 @@ class IreneVisit {
     }
 }
 
+const ireneIterator = Symbol('irene-iterator');
+
 class Irene {
     constructor(elems) {
         this.elems = elems;
         this.length = elems.length;
+    }
+
+    [Symbol.iterator]() {
+        const self = this;
+        return {
+            current: this[ireneIterator].current,
+            last: this.elems.length,
+
+            next() {
+                if (this.current < this.last) {
+                    return { done: false, value: self.elems[this.current++] };
+                } else {
+                    return { done: true };
+                }
+            }
+        };
     }
 
     forEach(f) {
@@ -302,6 +320,10 @@ class Irene {
         return this.length;
     }
 }
+
+Irene.prototype[ireneIterator] = {
+    current: 0
+};
 
 Irene.core = {
     id(idName) {
