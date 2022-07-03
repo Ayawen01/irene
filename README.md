@@ -22,9 +22,14 @@
 #### 构造方法
 ```javascript
 $irene(HTMLElement | String(idName | className | tagName) | Array) -> Irene
+
+// 例子
+$irene('p'); // 抓取所有 p 标签
+$irene('.madoka'); // 抓取所有类名为 madoka 的标签
+$irene('#qwq'); // 抓取 id 为 qwq 的标签
 ```
 
-#### forEach、map、filter、sort、merge、reverse
+#### forEach、map、filter、sort、[merge]()、reverse
 ```javascript
 method: forEach(f) -> void
 $irene('p').forEach((item, index) => {
@@ -32,18 +37,19 @@ $irene('p').forEach((item, index) => {
 });
 
 method: map(f) -> Irene
-const newP = $irene('p').map((item, index) => {
+$irene('p').map((item, index) => {
     ...
 });
 
 method: filter(f) -> Irene
-const newP = $irene('p').filter((item, index) => {
+$irene('p').filter((item, index) => {
     ...
 });
 
 method: sort(f=(a,b)=>a-b) -> Irene
 $irene('p').sort();
 
+// 合并
 method: merge() -> Irene
 $irene('p').merge();
 
@@ -54,11 +60,27 @@ $irene('p').reverse();
 #### 获取父类Dom
 ```javascript
 method: parent() -> Irene
+
+// 例子
+<div>
+    <p></p>
+</div>
+
+$irene('p').parent(); // [div]
 ```
 
 #### 获取同级Dom
 ```javascript
 method: siblings() -> Irene
+
+// 例子
+<div>
+    <h2></h2>
+    <p></p>
+    <p></p>
+</div>
+
+$irene('p').siblings(); // [h2、p、p]
 ```
 
 #### 获取子类Dom
