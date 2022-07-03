@@ -40,8 +40,6 @@ class IreneVisit {
     }
 }
 
-const ireneIterator = Symbol('irene-iterator');
-
 class Irene {
     constructor(elems) {
         this.elems = elems;
@@ -51,7 +49,7 @@ class Irene {
     [Symbol.iterator]() {
         const self = this;
         return {
-            current: this[ireneIterator].current,
+            current: 0,
             last: this.elems.length,
 
             next() {
@@ -320,10 +318,6 @@ class Irene {
         return this.length;
     }
 }
-
-Irene.prototype[ireneIterator] = {
-    current: 0
-};
 
 Irene.core = {
     id(idName) {
