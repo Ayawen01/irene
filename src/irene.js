@@ -259,7 +259,7 @@ class Irene {
         return this;
     }
 
-    eq(index) {
+    at(index) {
         if (index >= this.len()) {
             throw new Error('下标访问越界');
         }
@@ -280,14 +280,14 @@ class Irene {
         if (this.len() < 1) {
             throw new Error('当前元素为空');
         }
-        return this.eq(0);
+        return this.at(0);
     }
 
     last() {
         if (this.len() < 1) {
             throw new Error('当前元素为空');
         }
-        return this.eq(this.len() - 1);
+        return this.at(this.len() - 1);
     }
 
     text() {

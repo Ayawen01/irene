@@ -80,12 +80,21 @@ method: siblings() -> Irene
     <p></p>
 </div>
 
-$irene('p').siblings(); // [h2、p、p]
+$irene('p').siblings(); // [h2, p, p]
 ```
 
 #### 获取子类Dom
 ```javascript
 method: children() -> Irene
+
+// 例子
+<div>
+    <h2></h2>
+    <p></p>
+    <p></p>
+</div>
+
+$irene('div').children(); // [h2, p, p]
 ```
 
 #### 在当前头部添加元素、在当前尾部添加元素
@@ -106,9 +115,9 @@ method: remove() -> Irene
 method: render() -> Irene
 ```
 
-#### eq、range、first、last
+#### at、range、first、last
 ```javascript
-method: eq(index) -> Irene
+method: at(index) -> Irene
 method: range(startIndex, endIndex) -> Irene
 method: first() -> Irene
 method: last() -> Irene
