@@ -317,6 +317,12 @@ class Irene {
     len() {
         return this.length;
     }
+
+    getLink(){
+        return this.elems.map((item) => {
+            return item.href
+        })
+    }
 }
 
 Irene.core = {

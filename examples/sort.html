@@ -12,9 +12,15 @@
         <p>2</p>
         <p>3</p>
         <p>1</p>
+        <a href="http://www.baidu.com"></a>
+        <a href="http://www.baidu.com"></a>
+        <a href="http://www.baidu.com"></a>
+        <a href="http://www.baidu.com"></a>
+        <a href="http://www.baidu.com"></a>
     </div>
     <button onclick="ascending()">升序</button>
     <button onclick="descending()">降序</button>
+    <button onclick="test()">测试</button>
 </body>
 <script src="../src/irene.js"></script>
 <script>
@@ -32,6 +38,10 @@
             const _b = Number($irene(b).text());
             return _b - _a;
         }).render();
+    }
+
+    function test(){
+        console.log($irene('a').getLink())
     }
 </script>
 </html>
