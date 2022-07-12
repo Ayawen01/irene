@@ -129,11 +129,11 @@ method: text() -> String
 method: setText() -> Irene
 ```
 
-#### clone、clear、getElems、len、getUrl
+#### clone、clear、getElems、len、getLink
 ```javascript
 method: clone(isDeep = true) -> Irene
 method: clear() -> void
 method: getElems() -> Array
 method: len() -> Number
-method: getUrl() -> Array
+method: getLink() -> Array
 ```
