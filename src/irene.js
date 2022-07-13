@@ -54,7 +54,7 @@ class Irene {
 
             next() {
                 if (this.current < this.last) {
-                    return { done: false, value: self.elems[this.current++] };
+                    return { done: false, value: [this.current, self.elems[this.current++]] };
                 } else {
                     return { done: true };
                 }
@@ -63,14 +63,14 @@ class Irene {
     }
 
     forEach(f) {
-        for (const [index, item] of this.elems.entries()) {
+        for (const [index, item] of this) {
             f.call(item, item, index);
         }
     }
 
     map(f) {
         const elems = [];
-        for (const [index, item] of this.elems.entries()) {
+        for (const [index, item] of this) {
             elems.push(f.call(item, item, index));
         }
         return new Irene(elems);
@@ -78,7 +78,7 @@ class Irene {
 
     filter(f) {
         const elems = [];
-        for (const [index, item] of this.elems.entries()) {
+        for (const [index, item] of this) {
             if (f.call(item, item, index)) {
                 elems.push(item);
             }
