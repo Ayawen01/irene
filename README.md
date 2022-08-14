@@ -136,5 +136,5 @@ method: clear() -> void
 method: getElem() -> Item
 method: getElems() -> Array
 method: len() -> Number
-method: getLink() -> Array
+method: getLink() -> Irene
 ```
