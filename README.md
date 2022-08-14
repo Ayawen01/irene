@@ -59,7 +59,7 @@ $irene('p').reverse();
 
 #### 获取父类Dom
 ```javascript
-method: parent() -> Irene
+method: parent(filter) -> Irene
 
 // 例子
 <div>
@@ -129,10 +129,11 @@ method: text() -> String
 method: setText() -> Irene
 ```
 
-#### clone、clear、getElems、len、getLink
+#### clone、clear、getElem、getElems、len、getLink
 ```javascript
 method: clone(isDeep = true) -> Irene
 method: clear() -> void
+method: getElem() -> Item
 method: getElems() -> Array
 method: len() -> Number
 method: getLink() -> Array

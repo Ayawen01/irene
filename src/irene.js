@@ -3,7 +3,7 @@
 class IreneVisit {
     constructor(x) {
         this.value = x;
-        this.type = Object.prototype.toString.call(x).slice(8, -1);
+        this.type = Irene.tool.typeof(x);
     }
 
     execute() {
@@ -110,20 +110,44 @@ class Irene {
         return this;
     }
     
-    parent() {
+    parent(filter) {
         const parents = [];
         this.forEach(item => {
             const parent = item.parentNode;
             const index = parents.findIndex(node => node === parent);
             if (index === -1) {
-                parents.push(parent);
+                if (filter !== undefined && Irene.tool.typeof(filter) === 'String') {
+                    // 判断 filter 的内容
+                    if (Irene.tool.isClass(filter)) {
+                        if (parent.classList.contains(filter.slice(1))) {
+                            parents.push(parent);
+                        }
+                    } else if (Irene.tool.isId(filter)) {
+                        if (parent.id === filter.slice(1)) {
+                            parents.push(parent);
+                        }
+                    } else if (Irene.tool.isTag(filter)) {
+                        if (parent.tagName === filter.toLocaleUpperCase()) {
+                            parents.push(parent);
+                        }
+                    } else {
+                        // panic!
+                    }
+                } else if (filter !== undefined && Irene.tool.typeof(filter) === 'Function') {
+                    const fn = filter;
+                    if (fn(parent)) {
+                        parents.push(parent);
+                    }
+                } else {
+                    parents.push(parent);
+                }
             }
         });
         return new Irene(parents);
     }
 
     siblings() {
-        const [item] = this.first().getElems();
+        const item = this.first().getElem();
         const prevElems = [];
         const nextElems = [];
         
@@ -310,6 +334,10 @@ class Irene {
         return this.map(item => Irene.core.cloneNode(item));
     }
 
+    getElem() {
+        return this.elems[0];
+    }
+
     getElems() {
         return this.elems;
     }
@@ -318,10 +346,8 @@ class Irene {
         return this.length;
     }
 
-    getLink(){
-        return this.elems.map((item) => {
-            return item.href
-        })
+    getLink() {
+        return this.map(item => item.href);
     }
 }
 
