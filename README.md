@@ -71,7 +71,7 @@ $irene('p').parent(); // [div]
 
 #### 获取同级Dom
 ```javascript
-method: siblings() -> Irene
+method: siblings(filter) -> Irene
 
 // 例子
 <div>

@@ -146,7 +146,7 @@ class Irene {
         return new Irene(parents);
     }
 
-    siblings() {
+    siblings(filter) {
         const item = this.first().getElem();
         const prevElems = [];
         const nextElems = [];
@@ -162,7 +162,32 @@ class Irene {
             nextElems.push(node.nextElementSibling);
             node = node.nextElementSibling;
         }
-        return new Irene([...prevElems.reverse(),...nextElems]);
+        
+        const siblings = [...prevElems.reverse(), ...nextElems].filter(item => {
+            if (filter !== undefined && Irene.tool.typeof(filter) === 'String') {
+                if (Irene.tool.isClass(filter)) {
+                    if (item.classList.contains(filter.slice(1))) {
+                        return true;
+                    }
+                } else if (Irene.tool.isId(filter)) {
+                    if (item.id === filter.slice(1)) {
+                        return true;
+                    }
+                } else if (Irene.tool.isTag(filter)) {
+                    if (item.tagName === filter.toLocaleUpperCase()) {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            } else if (filter !== undefined && Irene.tool.typeof(filter) === 'Function') {
+                const fn = filter;
+                return fn(item);
+            } else {
+                return true;
+            }
+        });
+        return new Irene(siblings);
     }
 
     children() {
