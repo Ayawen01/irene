@@ -190,24 +190,42 @@ class Irene {
         return new Irene(siblings);
     }
 
-    children() {
+    children(filter) {
         const childrens = [];
         this.forEach(item => {
-            const children = Array.from(item.children);
+            const children = Array.from(item.children).filter(children => {
+                if (filter !== undefined && Irene.tool.typeof(filter) === 'String') {
+                    if (Irene.tool.isClass(filter)) {
+                        if (children.classList.contains(filter.slice(1))) {
+                            return true;
+                        }
+                    } else if (Irene.tool.isId(filter)) {
+                        if (children.id === filter.slice(1)) {
+                            return true;
+                        }
+                    } else if (Irene.tool.isTag(filter)) {
+                        if (children.tagName === filter.toLocaleUpperCase()) {
+                            return true;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else if (filter !== undefined && Irene.tool.typeof(filter) === 'Function') {
+                    const fn = filter;
+                    if (fn(children)) {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            });
             childrens.push(...children);
         })
         return new Irene(childrens);
     }
 
     begin(elem) {
-        if (elem instanceof Irene) {
-            this.forEach(item => {
-                elem.forEach(node => item.insertAdjacentElement('beforebegin', Irene.core.cloneNode(node)));
-            });
-            return;
-        }
-
-        if (elem instanceof Array) {
+        if (elem instanceof Irene || elem instanceof Array) {
             this.forEach(item => {
                 elem.forEach(node => item.insertAdjacentElement('beforebegin', Irene.core.cloneNode(node)));
             });
@@ -223,14 +241,7 @@ class Irene {
     }
 
     append(elem) {
-        if (elem instanceof Irene) {
-            this.forEach(item => {
-                elem.forEach(node => item.insertAdjacentElement('afterend', Irene.core.cloneNode(node)));
-            });
-            return;
-        }
-
-        if (elem instanceof Array) {
+        if (elem instanceof Irene || elem instanceof Array) {
             this.forEach(item => {
                 elem.forEach(node => item.insertAdjacentElement('afterend', Irene.core.cloneNode(node)));
             });
@@ -246,14 +257,7 @@ class Irene {
     }
 
     beginChild(elem) {
-        if (elem instanceof Irene) {
-            this.forEach(item => {
-                elem.forEach(node => item.insertAdjacentElement('afterbegin', Irene.core.cloneNode(node)));
-            });
-            return;
-        }
-
-        if (elem instanceof Array) {
+        if (elem instanceof Irene || elem instanceof Array) {
             this.forEach(item => {
                 elem.forEach(node => item.insertAdjacentElement('afterbegin', Irene.core.cloneNode(node)));
             });
@@ -269,14 +273,7 @@ class Irene {
     }
 
     appendChild(elem) {
-        if (elem instanceof Irene) {
-            this.forEach(item => {
-                elem.forEach(node => item.insertAdjacentElement('beforeend', Irene.core.cloneNode(node)));
-            });
-            return;
-        }
-
-        if (elem instanceof Array) {
+        if (elem instanceof Irene || elem instanceof Array) {
             this.forEach(item => {
                 elem.forEach(node => item.insertAdjacentElement('beforeend', Irene.core.cloneNode(node)));
             });

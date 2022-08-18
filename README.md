@@ -85,7 +85,7 @@ $irene('p').siblings(); // [h2, p, p]
 
 #### 获取子类Dom
 ```javascript
-method: children() -> Irene
+method: children(filter) -> Irene
 
 // 例子
 <div>
